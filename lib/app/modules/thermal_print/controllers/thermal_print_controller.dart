@@ -12,6 +12,11 @@ class ThermalPrintController extends GetxController {
   RxBool visible = false.obs;
   RxBool success = false.obs;
 
+  Future onRefresh() {
+    initBluetooth();
+    return initBluetooth();
+  }
+
   Future<void> initBluetooth() async {
     if(EasyLoading.isShow) return;
     await EasyLoading.show();

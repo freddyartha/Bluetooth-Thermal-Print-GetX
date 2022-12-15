@@ -8,6 +8,7 @@ void main() {
   EasyLoading.instance;
   runApp(
     GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: "Application",
       initialRoute: AppPages.initial,
       getPages: AppPages.routes,
