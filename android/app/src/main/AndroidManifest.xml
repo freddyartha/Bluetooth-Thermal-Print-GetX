@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.freddy.bluetooth_printing_test">
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
    <application
         android:label="bluetooth_printing_test"
         android:name="${applicationName}"

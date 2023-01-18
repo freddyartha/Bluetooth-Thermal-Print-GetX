@@ -7,7 +7,6 @@ environment:
 
 dependencies: 
   cupertino_icons: ^1.0.2
-  get: 4.6.5
   flutter: 
     sdk: flutter
   printing: ^5.9.3
@@ -17,6 +16,15 @@ dependencies:
   flutter_easyloading: ^3.0.5
   rename: ^2.0.1
   bluetooth_print: ^4.3.0
+  whatsapp_share: ^1.1.1
+  whatsapp_unilink: ^2.1.0
+  url_launcher: ^6.1.7
+  fluttercontactpicker: ^4.7.0
+  permission_handler: ^10.2.0
+  contacts_service: ^0.6.3
+  get: ^4.6.5
+  blue_thermal_printer: ^1.2.3
+  get_storage: ^2.0.3
 
 dev_dependencies: 
   flutter_lints: ^2.0.0
