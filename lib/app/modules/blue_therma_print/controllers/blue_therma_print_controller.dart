@@ -1,20 +1,21 @@
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:bluetooth_printing_test/app/modules/blue_thermal_print_home/controllers/blue_thermal_print_home_controller.dart';
+import 'package:bluetooth_printing_test/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 class BlueThermaPrintController extends GetxController {
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
 
-  RxList<BluetoothDevice> devices = <BluetoothDevice>[].obs ;
+  RxList<BluetoothDevice> devices = <BluetoothDevice>[].obs;
   BluetoothDevice? device;
   final RxBool _connected = false.obs;
   final RxBool isConnected = false.obs;
   final String devicesMsg = 'tidak ada perangkat';
   final List<Map<String, dynamic>> data = BlueThermalPrintHomeController().data;
   final box = GetStorage();
-  
 
   @override
   void onInit() {
@@ -24,72 +25,93 @@ class BlueThermaPrintController extends GetxController {
 
   @override
   void onClose() {
-    bluetooth.disconnect();
-    super.onInit();
+    if (isConnected.value == true) {
+      bluetooth.disconnect();
+    }
+    if(EasyLoading.isShow) return;
+    super.onClose();
+  }
+
+  onRefresh()async {
+    try {
+      devices.value = await bluetooth.getBondedDevices();
+    } catch (e) {
+      print("terjadi kesalahan $e");
+    }
   }
 
   Future<void> initPlatformState() async {
     isConnected.value = (await bluetooth.isConnected)!;
     try {
       devices.value = await bluetooth.getBondedDevices();
-    } catch (e)  {
+    } catch (e) {
       print("terjadi kesalahan $e");
     }
 
-    bluetooth.onStateChanged().listen((state) {
+    bluetooth.onStateChanged().listen((state) async {
+      if(EasyLoading.isShow) return;
+      await EasyLoading.show();
       switch (state) {
         case BlueThermalPrinter.CONNECTED:
-            _connected.value = true;
-            Future.delayed(Duration(milliseconds: 500)).then((value) => printData())
-            .then((value) => box.write('printer', device!.toMap())).then((value) => Get.back());
+          _connected.value = true;
+          await Future.delayed(Duration(milliseconds: 500))
+              .then((value) => printData())
+              .then((value) => box.write('printer', device!.toMap()))
+              .then((value) => Get.back());
           break;
         case BlueThermalPrinter.DISCONNECTED:
-            _connected.value = false;
+          _connected.value = false;
           break;
         case BlueThermalPrinter.STATE_OFF:
-            _connected.value = false;
-            print("dialog harap hidupkan bluetooth anda");
+          _connected.value = false;
+          print("dialog harap hidupkan bluetooth anda");
           break;
         case BlueThermalPrinter.ERROR:
-            _connected.value = false;
-            print("bluetooth device state: error");
+          _connected.value = false;
           break;
         default:
-          print(state);
           break;
       }
+      EasyLoading.dismiss();
     });
 
     if (isConnected.value == true) {
-        _connected.value = true;
+      _connected.value = true;
     }
   }
 
-  void connect(BluetoothDevice connDevice) {
-    print(connDevice);
+  void connect(BluetoothDevice connDevice) async {
+    if(EasyLoading.isShow) return;
+    await EasyLoading.show();
     if (connDevice.name != null) {
       bluetooth.isConnected.then((isConnected) {
         if (isConnected == false) {
-          try {
-            bluetooth.connect(connDevice).catchError((error) {
-              _connected.value == false;
-            });
-          } catch (e) {
-            print('connection error : $e');
-          }
-          
+          bluetooth.connect(connDevice).catchError((error) {
+            _connected.value == false;
+            Get.toNamed(Routes.BLUE_THERMA_PRINT);
+            box.erase();
+          });
           _connected.value == true;
         }
       });
     } else {
-      SnackBar(content: Text('Tidak ada perangkat dipilih'),);
+      SnackBar(
+        content: Text('Tidak ada perangkat dipilih'),
+      );
     }
+    EasyLoading.dismiss();
   }
 
   void printData() async {
     RxInt total = 0.obs;
-
+    dynamic result;
     try {
+      result = await bluetooth.printNewLine();
+    } catch (e) {
+      Get.toNamed(Routes.BLUE_THERMA_PRINT);
+      box.erase();
+    }
+    if (await result != null) {
       bluetooth.print4Column(
           "Description", "Qty", "Price", "Total", Size.medium.val,
           format: "%-20s %5s %7s %6.5s %n");
@@ -100,20 +122,15 @@ class BlueThermaPrintController extends GetxController {
             format: "%-20s %5s %7s %6.5s %n");
       }
       bluetooth.printNewLine();
-      bluetooth.print3Column("t", "TOTAL", "${total.value}", Size.bold.val,
+      bluetooth.print3Column("", "TOTAL", "${total.value}", Size.bold.val,
           format: "%-10s %10s %9.5s %n");
       bluetooth.printNewLine();
       bluetooth.paperCut();
       bluetooth.drawerPin2();
-    } catch (e) {
-      print('ketika print : $e');
     }
-
-    
+    return;
   }
 }
-
-
 
 enum Size {
   medium, //normal size text
@@ -162,4 +179,3 @@ extension PrintAlign on Align {
     }
   }
 }
-

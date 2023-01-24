@@ -40,20 +40,17 @@ class BlueThermalPrintHomeController extends GetxController {
   @override
   void onInit() {
     hitungTotal();
-    // box.remove('printer');
     super.onInit();
   }
 
   printerState(){
     var savedDevice = box.read('printer');
-    print(savedDevice);
     final BluetoothDevice printer; 
     if (savedDevice != null) {
       printer = BluetoothDevice.fromMap(savedDevice);
       BlueThermaPrintController().connect(printer);
-      Future.delayed(Duration(milliseconds: 1500)).then((value) => BlueThermaPrintController().printData());
+      BlueThermaPrintController().printData();
     } else{
-      // Get.toNamed(Routes.BLUE_THERMA_PRINT,arguments: data);
       Get.toNamed(Routes.BLUE_THERMA_PRINT);
     }
     

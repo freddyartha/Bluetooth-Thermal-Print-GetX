@@ -48,11 +48,6 @@ class HomeController extends GetxController {
   // late RxList<Contact> _contacts;
   final RxList _contacts = [].obs;
   
-  @override
-  void onInit(){
-    // refreshContacts();
-    super.onInit();
-  }
 
   Future<void> refreshContacts() async {
     // Load without thumbnails initially.
