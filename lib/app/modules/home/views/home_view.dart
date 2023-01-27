@@ -49,6 +49,18 @@ class HomeView extends GetView<HomeController> {
                   child: const Text("Blue Thermal Print (Android)"),
                 ),
               ),
+              SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: ElevatedButton(
+                  onPressed: () {
+                    controller.goToPopup();
+                  },
+                  child: const Text("BirthDay Pop Up"),
+                ),
+              ),
               // SizedBox(
               //   height: 20,
               // ),

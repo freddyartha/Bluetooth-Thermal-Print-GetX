@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/birthday_popup/bindings/birthday_popup_binding.dart';
+import '../modules/birthday_popup/views/birthday_popup_view.dart';
 import '../modules/blue_therma_print/bindings/blue_therma_print_binding.dart';
 import '../modules/blue_therma_print/views/blue_therma_print_view.dart';
 import '../modules/blue_thermal_print_home/bindings/blue_thermal_print_home_binding.dart';
@@ -43,6 +45,11 @@ class AppPages {
       name: _Paths.BLUE_THERMAL_PRINT_HOME,
       page: () => const BlueThermalPrintHomeView(),
       binding: BlueThermalPrintHomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.BIRTHDAY_POPUP,
+      page: () => const BirthdayPopupView(),
+      binding: BirthdayPopupBinding(),
     ),
   ];
 }

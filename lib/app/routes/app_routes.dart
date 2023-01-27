@@ -11,6 +11,7 @@ abstract class Routes {
   static const TESTING = _Paths.TESTING;
   static const BLUE_THERMA_PRINT = _Paths.BLUE_THERMA_PRINT;
   static const BLUE_THERMAL_PRINT_HOME = _Paths.BLUE_THERMAL_PRINT_HOME;
+  static const BIRTHDAY_POPUP = _Paths.BIRTHDAY_POPUP;
 }
 
 abstract class _Paths {
@@ -21,4 +22,5 @@ abstract class _Paths {
   static const TESTING = '/testing';
   static const BLUE_THERMA_PRINT = '/blue-therma-print';
   static const BLUE_THERMAL_PRINT_HOME = '/blue-thermal-print-home';
+  static const BIRTHDAY_POPUP = '/birthday-popup';
 }

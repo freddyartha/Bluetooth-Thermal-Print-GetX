@@ -77,6 +77,10 @@ class HomeController extends GetxController {
     Get.offAllNamed(Routes.BLUE_THERMAL_PRINT_HOME);
   }
 
+  void goToPopup(){
+    Get.toNamed(Routes.BIRTHDAY_POPUP);
+  }
+
   final noHPCon = InputTextController();
   void goToWhatsapp() {
     Helper.dialogCustomWidget([
