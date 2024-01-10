@@ -30,7 +30,7 @@ class BlueThermalPrintHomeController extends GetxController {
   final RxInt total = 0.obs;
   final box = GetStorage();
 
-  void hitungTotal(){
+  void hitungTotal() {
     for (var i = 0; i < data.length; i++) {
       total.value = data[i]['total_price'];
     }
@@ -43,17 +43,20 @@ class BlueThermalPrintHomeController extends GetxController {
     super.onInit();
   }
 
-  printerState(){
+  printerState() {
     var savedDevice = box.read('printer');
-    final BluetoothDevice printer; 
+    final BluetoothDevice printer;
     if (savedDevice != null) {
       printer = BluetoothDevice.fromMap(savedDevice);
       BlueThermaPrintController().connect(printer);
       BlueThermaPrintController().printData();
-    } else{
+    } else {
       Get.toNamed(Routes.BLUE_THERMA_PRINT);
     }
-    
   }
 
+  Future<bool> backOnTap() async {
+    Get.back(result: true);
+    return true;
+  }
 }

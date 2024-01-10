@@ -8,6 +8,65 @@ import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 
 class Helper {
+  static Future<bool?> dialogQuestion({
+    String? message,
+    IconData? icon,
+    String? textConfirm,
+    String? textCancel,
+    Color? color,
+    Function()? confirmOntap,
+    Function()? cancelOntap,
+  }) async {
+    return await Get.dialog<bool?>(
+      AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5))),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon ?? Icons.question_mark_outlined,
+              color: color ?? Colors.amber,
+              size: 40,
+            ),
+            const Padding(padding: EdgeInsets.all(10)),
+            Text(
+              message ?? "",
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        contentPadding:
+            const EdgeInsets.only(bottom: 0, top: 20, right: 20, left: 20),
+        actionsPadding:
+            const EdgeInsets.only(top: 10, bottom: 5, left: 20, right: 20),
+        actions: [
+          TextButton(
+              child: Text(
+                textCancel ?? "Close",
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              onPressed: () {
+                cancelOntap != null ? cancelOntap() : Get.back(result: false);
+              }),
+          TextButton(
+            child: Text(
+              textConfirm ?? "OK",
+              style: TextStyle(
+                color: color ?? Colors.green,
+              ),
+            ),
+            onPressed: () {
+              confirmOntap != null ? confirmOntap() : Get.back(result: false);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   static String? dateToString(DateTime? date,
       {String format = 'yyyy-MM-dd HH:mm', bool returnNull = false}) {
     if (date == null) return returnNull ? null : "";
@@ -63,8 +122,8 @@ class Helper {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextComponent(
-              message,
-              color: MyConfig.primaryColor.shade900,
+              value: message,
+              fontColor: MyConfig.primaryColor.shade900,
             ),
           ],
         ),
@@ -74,8 +133,8 @@ class Helper {
         actions: [
           TextButton(
             child: TextComponent(
-              "Close",
-              color: MyConfig.primaryColor.shade500,
+              value: "Close",
+              fontColor: MyConfig.primaryColor.shade500,
             ),
             onPressed: () {
               Get.back(result: false);
@@ -133,7 +192,8 @@ class Helper {
   }
 
   static bool isTablet(BuildContext context) {
-    final data = MediaQueryData.fromWindow(WidgetsBinding.instance.window);
+    final data = MediaQueryData.fromView(
+        WidgetsBinding.instance.platformDispatcher.views.single);
     return data.size.shortestSide < 550 ? false : true;
   }
 
@@ -150,8 +210,8 @@ class Helper {
             ),
             Padding(padding: EdgeInsets.all(7)),
             TextComponent(
-              message ?? "-",
-              color: MyConfig.primaryColor.shade900,
+              value: message ?? "-",
+              fontColor: MyConfig.primaryColor.shade900,
               maxLines: 2,
             ),
           ],
@@ -170,8 +230,8 @@ class Helper {
         actions: [
           TextButton(
             child: TextComponent(
-              "Close",
-              color: MyConfig.primaryColor.shade500,
+              value: "Close",
+              fontColor: MyConfig.primaryColor.shade500,
             ),
             onPressed: () {
               Get.back(result: false);

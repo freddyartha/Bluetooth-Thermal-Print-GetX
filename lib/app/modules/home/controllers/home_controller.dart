@@ -13,11 +13,9 @@ import '../../../mahas/text_component.dart';
 import '../../../routes/app_pages.dart';
 
 class HomeController extends GetxController {
-
   Future<void> _askPermissions() async {
     PermissionStatus permissionStatus = await _getContactPermission();
     if (permissionStatus == PermissionStatus.granted) {
-      
     } else {
       // _handleInvalidPermissions(permissionStatus);
     }
@@ -47,21 +45,17 @@ class HomeController extends GetxController {
 
   // late RxList<Contact> _contacts;
   final RxList _contacts = [].obs;
-  
 
   Future<void> refreshContacts() async {
     // Load without thumbnails initially.
-    var contacts = (await ContactsService.getContacts(
-        withThumbnails: false));
+    var contacts = (await ContactsService.getContacts(withThumbnails: false));
 //      var contacts = (await ContactsService.getContactsForPhone("8554964652"))
 //          ;
     // setState(() {
-      _contacts.value = contacts;
-      for(var i=0; i< contacts.length ;i++){
-
-        print(contacts[i].displayName);
-      
-      }
+    _contacts.value = contacts;
+    for (var i = 0; i < contacts.length; i++) {
+      print(contacts[i].displayName);
+    }
     // });
   }
 
@@ -74,10 +68,14 @@ class HomeController extends GetxController {
   }
 
   void goToBlue() {
-    Get.offAllNamed(Routes.BLUE_THERMAL_PRINT_HOME);
+    Get.toNamed(Routes.BLUE_THERMAL_PRINT_HOME);
   }
 
-  void goToPopup(){
+  void goToPrintBluetoothThermal() {
+    Get.toNamed(Routes.PRINT_BLUETOOTH_THERMAL_UI);
+  }
+
+  void goToPopup() {
     Get.toNamed(Routes.BIRTHDAY_POPUP);
   }
 
@@ -93,18 +91,17 @@ class HomeController extends GetxController {
         children: [
           TextButton(
             child: TextComponent(
-              "Simpan",
-              color: MyConfig.primaryColor.shade500,
+              value: "Simpan",
+              fontColor: MyConfig.primaryColor.shade500,
             ),
             onPressed: () {
               launchWhatsAppString();
-              
             },
           ),
           TextButton(
             child: TextComponent(
-              "Pilih Kontak",
-              color: MyConfig.primaryColor.shade500,
+              value: "Pilih Kontak",
+              fontColor: MyConfig.primaryColor.shade500,
             ),
             onPressed: () async {
               _askPermissions();
@@ -123,14 +120,11 @@ class HomeController extends GetxController {
       phoneNumber: '${noHPCon.value}',
       text: "Hey! I'm inquiring about the apartment listing",
     );
-    await launchUrlString('$link'); 
+    await launchUrlString('$link');
   }
-
 
   // pilihKontak()async {
   //   final PhoneContact contact =
   //   await FlutterContactPicker.pickPhoneContact();
   // }
-  
-  
 }

@@ -10,6 +10,10 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/normal_print/bindings/normal_print_binding.dart';
 import '../modules/normal_print/views/normal_print_view.dart';
+import '../modules/print_bluetooth_thermal/bindings/print_bluetooth_thermal_binding.dart';
+import '../modules/print_bluetooth_thermal/views/print_bluetooth_thermal_view.dart';
+import '../modules/print_bluetooth_thermal_ui/bindings/print_bluetooth_thermal_ui_binding.dart';
+import '../modules/print_bluetooth_thermal_ui/views/print_bluetooth_thermal_ui_view.dart';
 import '../modules/thermal_print/bindings/thermal_print_binding.dart';
 import '../modules/thermal_print/views/thermal_print_view.dart';
 
@@ -50,6 +54,16 @@ class AppPages {
       name: _Paths.BIRTHDAY_POPUP,
       page: () => const BirthdayPopupView(),
       binding: BirthdayPopupBinding(),
+    ),
+    GetPage(
+      name: _Paths.PRINT_BLUETOOTH_THERMAL,
+      page: () => const PrintBluetoothThermalView(),
+      binding: PrintBluetoothThermalBinding(),
+    ),
+    GetPage(
+      name: _Paths.PRINT_BLUETOOTH_THERMAL_UI,
+      page: () => const PrintBluetoothThermalUiView(),
+      binding: PrintBluetoothThermalUiBinding(),
     ),
   ];
 }
